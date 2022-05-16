@@ -1,0 +1,59 @@
+{
+  "pins" : [
+    {
+      "identity" : "actomaton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/inamiy/Actomaton.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "18b559dc4f6b89676e6a71448257df2af6887196"
+      }
+    },
+    {
+      "identity" : "swift-case-paths",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-case-paths",
+      "state" : {
+        "revision" : "ce9c0d897db8a840c39de64caaa9b60119cf4be8",
+        "version" : "0.8.1"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-custom-dump",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-custom-dump",
+      "state" : {
+        "revision" : "c4f78db9b90ca57b7b6abc2223e235242739ea3c",
+        "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "41e7c263fb8c277e980ebcb9b0b5f6031d3d4886",
+        "version" : "2.4.2"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "50a70a9d3583fe228ce672e8923010c8df2deddd",
+        "version" : "0.2.1"
+      }
+    }
+  ],
+  "version" : 2
+}

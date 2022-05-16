@@ -1,13 +1,8 @@
-# 🕸️ ActoCrawler
+import Foundation
+import ActoCrawler
 
-**ActoCrawler** is a Swift Concurrency-powered crawler engine on top of [Actomaton](https://github.com/inamiy/Actomaton), with flexible customizability to create various HTML scrapers, image scrapers, etc.
-
-## Example
-
-- [Examples](https://github.com/inamiy/ActoCrawler/Examples)
-
-```swift
-@main
+/// - Note: Only for compiling purpose.
+/// @main
 struct ReadMeExample
 {
     static func main() async
@@ -17,7 +12,7 @@ struct ReadMeExample
             let nextLinksCount: Int
         }
 
-        let htmlCrawler = Crawler<Output, Void>.htmlScraper(
+        let htmlCrawler = await Crawler<Output, Void>.htmlScraper(
             config: CrawlerConfig(
                 maxDepths: 10,
                 maxTotalRequests: 100,
@@ -57,12 +52,3 @@ struct ReadMeExample
         print("Output Done")
     }
 }
-```
-
-## Acknowledgements
-
-- [mattsse/voyager](https://github.com/mattsse/voyager)
-
-## License
-
-[MIT](LICENSE)
