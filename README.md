@@ -4,7 +4,7 @@
 
 ## Example
 
-- [Examples](https://github.com/inamiy/ActoCrawler/Examples)
+- [Examples](Examples)
 
 ```swift
 @main
