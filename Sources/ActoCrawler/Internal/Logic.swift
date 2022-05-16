@@ -97,7 +97,7 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
             return didFinish(
                 request: nil,
                 nextRequests: requests,
-                output: nil
+                outputResult: nil
             )
 
         case let ._visit(request):
@@ -132,14 +132,14 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
             return didFinish(
                 request: request,
                 nextRequests: nextRequests,
-                output: .success(output)
+                outputResult: .success(output)
             )
 
         case let ._didFailVisit(request, error):
             return didFinish(
                 request: request,
                 nextRequests: [],
-                output: .failure(error)
+                outputResult: .failure(error)
             )
         }
     }
