@@ -9,10 +9,10 @@ extension Crawler
     ///   - scrapeHTML:
     ///     Receives `Response` that contains HTML `Document` to be scraped,
     ///     and returns array of next `UserRequest`s as well as `Output` for current request output.
-    ///     If `Error` is thrown inside this closure, it will be observed as a failure of ``Crawler/outputs``.
+    ///     If `Error` is thrown inside this closure, it will be observed as a failure of ``Crawler/events``.
     public static func htmlScraper(
         config: CrawlerConfig,
-        scrapeHTML: @escaping @Sendable (Response<Document, URLInfo>) async throws -> ([UserRequest<URLInfo>], Output?)
+        scrapeHTML: @escaping @Sendable (Response<Document, URLInfo>) async throws -> ([UserRequest<URLInfo>], Output)
     ) async -> Crawler
         where Output: Sendable
     {

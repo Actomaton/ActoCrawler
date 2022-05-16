@@ -9,16 +9,16 @@ struct Environment<Output, URLInfo>: Sendable
 
     /// Receives `Request` to perform some async operations (e.g. network requesting and parsing),
     /// and returns array of next `Request`s as well as `Output`.
-    let crawl: @Sendable (Request<URLInfo>) async throws -> ([UserRequest<URLInfo>], Output?)
+    let crawl: @Sendable (Request<URLInfo>) async throws -> ([UserRequest<URLInfo>], Output)
 
-    /// Output `AsyncSequence`  as a result of `crawl`.
+    /// Crawler output event `AsyncSequence`.
     /// - Todo: `any `AsyncSequence`.
-    let outputs: AsyncChannel<(Request<URLInfo>, Result<Output, CrawlError>)> = .init()
+    let events: AsyncChannel<CrawlEvent<Output, URLInfo>> = .init()
 
     init<Dependency>(
         config: CrawlerConfig,
         dependency: Dependency,
-        crawl: @escaping @Sendable (Request<URLInfo>, Dependency) async throws -> ([UserRequest<URLInfo>], Output?)
+        crawl: @escaping @Sendable (Request<URLInfo>, Dependency) async throws -> ([UserRequest<URLInfo>], Output)
     )
         where Dependency: Sendable
     {

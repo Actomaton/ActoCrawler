@@ -21,11 +21,11 @@ public struct Crawler<Output, URLInfo>: Sendable
     ///   - crawl:
     ///     Receives `Request` to perform some async operations (e.g. network requesting and parsing),
     ///     and returns array of next `UserRequest`s as well as `Output` for current request output.
-    ///     If `Error` is thrown inside this closure, it will be observed as a failure of ``Crawler/outputs``.
+    ///     If `Error` is thrown inside this closure, it will be observed as a failure of ``Crawler/events``.
     public init<Dependency>(
         config: CrawlerConfig,
         dependency: Dependency,
-        crawl: @escaping @Sendable (Request<URLInfo>, Dependency) async throws -> ([UserRequest<URLInfo>], Output?)
+        crawl: @escaping @Sendable (Request<URLInfo>, Dependency) async throws -> ([UserRequest<URLInfo>], Output)
     )
         where Dependency: Sendable
     {
@@ -42,7 +42,7 @@ public struct Crawler<Output, URLInfo>: Sendable
     /// Helper initializer that adds ``NetworkSession`` as dependency.
     public static func withNetworkSession(
         config: CrawlerConfig,
-        crawl: @escaping @Sendable (Request<URLInfo>, NetworkSession) async throws -> ([UserRequest<URLInfo>], Output?)
+        crawl: @escaping @Sendable (Request<URLInfo>, NetworkSession) async throws -> ([UserRequest<URLInfo>], Output)
     ) async -> Crawler<Output, URLInfo>
     {
         let configuration: URLSessionConfiguration = {
@@ -54,11 +54,11 @@ public struct Crawler<Output, URLInfo>: Sendable
         return .init(config: config, dependency: await NetworkSession(configuration: configuration), crawl: crawl)
     }
 
-    /// Output `AsyncSequence`  as a result of `crawl`.
+    /// Crawler output event `AsyncSequence`.
     /// - Todo: `any `AsyncSequence`.`
-    public var outputs: AsyncChannel<(Request<URLInfo>, Result<Output, CrawlError>)>
+    public var events: AsyncChannel<CrawlEvent<Output, URLInfo>>
     {
-        self.environment.outputs
+        self.environment.events
     }
 
     /// Visits `url` as depth = 1 without `urlInfo`.

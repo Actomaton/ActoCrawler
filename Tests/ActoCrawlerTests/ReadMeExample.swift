@@ -39,12 +39,14 @@ struct ReadMeExample
         // Visit initial page.
         htmlCrawler.visit(url: URL(string: "https://www.wikipedia.org")!)
 
-        // Observe visited outputs.
-        for await (req, result) in htmlCrawler.outputs {
-            switch result {
-            case let .success(output):
+        // Observe crawl events.
+        for await event in htmlCrawler.events {
+            switch event {
+            case let .willCrawl(req):
+                print("Crawl : 🕸️ [\(req.order)] [d=\(req.depth)] \(req.url)")
+            case let .didCrawl(req, .success(output)):
                 print("Output: ✅ [\(req.order)] [d=\(req.depth)] \(req.url), nextLinksCount = \(output.nextLinksCount)")
-            case let .failure(error):
+            case let .didCrawl(req, .failure(error)):
                 print("Output: ❌ [\(req.order)] [d=\(req.depth)] \(req.url), error = \(error)")
             }
         }
