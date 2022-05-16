@@ -31,11 +31,13 @@ struct ScraperExample
 
         htmlCrawler.visit(url: URL(string: "https://www.wikipedia.org")!)
 
-        for await (req, result) in htmlCrawler.outputs {
-            switch result {
-            case .success:
-                print("Output: ✅ [\(req.order)] [d=\(req.depth)] \(req.url)")
-            case let .failure(error):
+        for await event in htmlCrawler.events {
+            switch event {
+            case let .willCrawl(req):
+                print("Crawl : 🕸️ [\(req.order)] [d=\(req.depth)] \(req.url)")
+            case let .didCrawl(req, .success(output)):
+                print("Output: ✅ [\(req.order)] [d=\(req.depth)] \(req.url), nextLinksCount = \(output.nextLinksCount)")
+            case let .didCrawl(req, .failure(error)):
                 print("Output: ❌ [\(req.order)] [d=\(req.depth)] \(req.url), error = \(error)")
             }
         }

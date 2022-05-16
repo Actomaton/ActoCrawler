@@ -9,7 +9,7 @@ enum Action<Output, URLInfo>: Sendable
 {
     case visit([UserRequest<URLInfo>])
     case _visit(Request<URLInfo>)
-    case _didVisit(Request<URLInfo>, nextRequests: [UserRequest<URLInfo>], output: Output?)
+    case _didVisit(Request<URLInfo>, nextRequests: [UserRequest<URLInfo>], output: Output)
     case _didFailVisit(Request<URLInfo>, CrawlError)
 }
 
@@ -35,7 +35,7 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
         func didFinish(
             request: Request<URLInfo>?,
             nextRequests: [UserRequest<URLInfo>],
-            output: Result<Output, CrawlError>?
+            outputResult: Result<Output, CrawlError>?
         ) -> Eff
         {
             // Remove from `waitingURLs`.
@@ -57,11 +57,12 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
 
             /// AsyncChannel effect.
             let sendToChannel = Eff.fireAndForget {
-                if let request = request, let output = output {
-                    await env.outputs.send((request, output))
+                // NOTE: `outputResult = nil` is passed only on initial crawl.
+                if let request = request, let outputResult = outputResult {
+                    await env.events.send(.didCrawl(request, outputResult))
                 }
                 if isFinished {
-                    env.outputs.finish()
+                    env.events.finish()
                 }
             }
 
@@ -116,6 +117,8 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
                 // This is important when using `EffectQueue` with delay.
                 try Task.checkCancellation()
 
+                await env.events.send(.willCrawl(request))
+
                 do {
                     let (nextRequests, output) = try await env.crawl(request)
                     return ._didVisit(request, nextRequests: nextRequests, output: output)
@@ -129,7 +132,7 @@ func reducer<Output, URLInfo>() -> Reducer<Action<Output, URLInfo>, State, Envir
             return didFinish(
                 request: request,
                 nextRequests: nextRequests,
-                output: output.map(Result.success)
+                output: .success(output)
             )
 
         case let ._didFailVisit(request, error):

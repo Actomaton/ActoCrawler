@@ -72,11 +72,13 @@ struct ImageScraperExample
 
         await withThrowingTaskGroup(of: Void.self, returning: Void.self) { group in
             group.addTask {
-                for await (req, result) in imageDownloader.outputs {
-                    switch result {
-                    case let .success(output):
+                for await event in imageDownloader.events {
+                    switch event {
+                    case let .willCrawl(req):
+                        print("🖼️ Image Crawl : 🕸️ [\(req.order)] [d=\(req.depth)] \(req.url)")
+                    case let .didCrawl(req, .success(output)):
                         print("🖼️ Image Output: ✅ [\(req.order)] [d=\(req.depth)] \(req.url), savedFileURL = \(output.savedFileURL)")
-                    case let .failure(error):
+                    case let .didCrawl(req, .failure(error)):
                         print("🖼️ Image Output: ❌ [\(req.order)] [d=\(req.depth)] \(req.url), error = \(error)")
                     }
                 }
@@ -84,11 +86,13 @@ struct ImageScraperExample
                 print("Image Output Done")
             }
             group.addTask {
-                for await (req, result) in htmlCrawler.outputs {
-                    switch result {
-                    case .success:
+                for await event in htmlCrawler.events {
+                    switch event {
+                    case let .willCrawl(req):
+                        print("🌐 HTML Crawl : 🕸️ [\(req.order)] [d=\(req.depth)] \(req.url)")
+                    case let .didCrawl(req, .success):
                         print("🌐 HTML Output: ✅ [\(req.order)] [d=\(req.depth)] \(req.url)")
-                    case let .failure(error):
+                    case let .didCrawl(req, .failure(error)):
                         print("🌐 HTML Output: ❌ [\(req.order)] [d=\(req.depth)] \(req.url), error = \(error)")
                     }
                 }
