@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "ActoCrawler",
             targets: ["ActoCrawler"]),
+        .library(
+            name: "ActoCrawlerPlaywright",
+            targets: ["ActoCrawlerPlaywright"]),
         .executable(
             name: "ScraperExample",
             targets: ["ScraperExample"]),
@@ -19,16 +22,27 @@ let package = Package(
         .executable(
             name: "PagingScraperExample",
             targets: ["PagingScraperExample"]),
+        .executable(
+            name: "HeadlessBrowserExample",
+            targets: ["HeadlessBrowserExample"]),
     ],
     dependencies: [
         .package(url: "https://github.com/inamiy/Actomaton.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.0"),
         // .package(url: "https://github.com/apple/swift-async-algorithms.git", branch: "main"),
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.4.2"),
+        .package(url: "https://github.com/pvieito/PythonKit.git", branch: "master"),
     ],
     targets: [
         .target(
             name: "AsyncChannel"),
+        .target(
+            name: "PythonKitAsync",
+            dependencies: [
+                .product(name: "PythonKit", package: "PythonKit")
+            ],
+            resources: [.copy("pythonkit-async.py")]
+        ),
         .target(
             name: "ActoCrawler",
             dependencies: [
@@ -37,6 +51,18 @@ let package = Package(
                 .product(name: "Collections", package: "swift-collections"),
                 // .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
+            ],
+            swiftSettings: [
+                .unsafeFlags([
+                    "-Xfrontend", "-warn-concurrency",
+                    "-Xfrontend", "-enable-actor-data-race-checks",
+                ])
+            ]
+        ),
+        .target(
+            name: "ActoCrawlerPlaywright",
+            dependencies: [
+                "ActoCrawler", "PythonKitAsync"
             ],
             swiftSettings: [
                 .unsafeFlags([
@@ -60,5 +86,9 @@ let package = Package(
             name: "PagingScraperExample",
             dependencies: ["ActoCrawler"],
             path: "Examples/PagingScraperExample"),
+        .executableTarget(
+            name: "HeadlessBrowserExample",
+            dependencies: ["ActoCrawlerPlaywright"],
+            path: "Examples/HeadlessBrowserExample"),
     ]
 )
