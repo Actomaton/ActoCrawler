@@ -1,5 +1,4 @@
 import Foundation
-import ActoCrawler
 import ActoCrawlerPlaywright
 
 /// [playwright-python](https://playwright.dev/python/docs/intro) (headless browser) example.

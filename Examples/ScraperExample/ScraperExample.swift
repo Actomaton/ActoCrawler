@@ -1,5 +1,5 @@
 import Foundation
-import ActoCrawler
+import ActoCrawlerHTML
 
 /// Basic HTML scraping example using `Crawler.htmlScraper`.
 @main

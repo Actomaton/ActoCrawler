@@ -10,6 +10,12 @@ let package = Package(
             name: "ActoCrawler",
             targets: ["ActoCrawler"]),
         .library(
+            name: "ActoCrawlerNetworking",
+            targets: ["ActoCrawlerNetworking"]),
+        .library(
+            name: "ActoCrawlerHTML",
+            targets: ["ActoCrawlerHTML"]),
+        .library(
             name: "ActoCrawlerPlaywright",
             targets: ["ActoCrawlerPlaywright"]),
         .executable(
@@ -46,8 +52,23 @@ let package = Package(
                 .product(name: "Actomaton", package: "Actomaton"),
                 .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
                 .product(name: "Collections", package: "swift-collections"),
+            ],
+            path: "Sources/ActoCrawler"
+        ),
+        .target(
+            name: "ActoCrawlerNetworking",
+            dependencies: [
+                "ActoCrawler",
+            ],
+            path: "Sources/ActoCrawlerNetworking"
+        ),
+        .target(
+            name: "ActoCrawlerHTML",
+            dependencies: [
+                "ActoCrawlerNetworking",
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
             ],
+            path: "Sources/ActoCrawlerHTML"
         ),
         .target(
             name: "ActoCrawlerPlaywright",
@@ -60,15 +81,15 @@ let package = Package(
             dependencies: ["ActoCrawler"]),
         .executableTarget(
             name: "ScraperExample",
-            dependencies: ["ActoCrawler"],
+            dependencies: ["ActoCrawlerHTML"],
             path: "Examples/ScraperExample"),
         .executableTarget(
             name: "ImageScraperExample",
-            dependencies: ["ActoCrawler"],
+            dependencies: ["ActoCrawlerHTML"],
             path: "Examples/ImageScraperExample"),
         .executableTarget(
             name: "PagingScraperExample",
-            dependencies: ["ActoCrawler"],
+            dependencies: ["ActoCrawlerHTML"],
             path: "Examples/PagingScraperExample"),
         .executableTarget(
             name: "HeadlessBrowserExample",

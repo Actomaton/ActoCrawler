@@ -1,5 +1,5 @@
 @preconcurrency import Foundation
-import ActoCrawler
+import ActoCrawlerHTML
 
 /// Image scraper example using 2 crawlers: `htmlCrawler` and `imageDownloader`.
 @main

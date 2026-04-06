@@ -1,4 +1,5 @@
 @preconcurrency import Foundation
+import ActoCrawlerNetworking
 @preconcurrency import SwiftSoup
 
 extension Crawler
