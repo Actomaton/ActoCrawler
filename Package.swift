@@ -1,5 +1,6 @@
 // swift-tools-version: 6.2
 
+import Foundation
 import PackageDescription
 
 let package = Package(
@@ -94,13 +95,6 @@ let package = Package(
         .testTarget(
             name: "ActoCrawlerTests",
             dependencies: ["ActoCrawler"]),
-        .testTarget(
-            name: "ActoCrawlerPlaywrightJSTests",
-            dependencies: [
-                "ActoCrawlerPlaywrightJS",
-                .product(name: "JavaScriptEventLoopTestSupport", package: "JavaScriptKit"),
-            ]
-        ),
         .executableTarget(
             name: "ScraperExample",
             dependencies: ["ActoCrawlerHTML"],
@@ -126,3 +120,17 @@ let package = Package(
     ],
     swiftLanguageModes: [.v6]
 )
+
+// MARK: - Wasm-only test target (JavaScriptKit crashes at load time on native platforms)
+
+if ProcessInfo.processInfo.environment["WASM"] != nil {
+    package.targets.append(
+        .testTarget(
+            name: "ActoCrawlerPlaywrightJSTests",
+            dependencies: [
+                "ActoCrawlerPlaywrightJS",
+                .product(name: "JavaScriptEventLoopTestSupport", package: "JavaScriptKit"),
+            ]
+        )
+    )
+}
