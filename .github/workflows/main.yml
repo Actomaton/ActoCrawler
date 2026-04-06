@@ -10,6 +10,16 @@ on:
   pull_request:
 
 jobs:
+  swift-build:
+    name: Swift build
+    runs-on: macos-26
+    steps:
+    - uses: actions/checkout@v4
+    - name: Select Xcode 26.4
+      run: sudo xcode-select -s /Applications/Xcode_26.4.app
+    - name: Build
+      run: make swift-build
+
   swift-test:
     name: Swift test
     runs-on: macos-26
@@ -23,6 +33,7 @@ jobs:
   required:
     name: Required
     needs:
+      - swift-build
       - swift-test
     if: always()
     runs-on: ubuntu-latest
