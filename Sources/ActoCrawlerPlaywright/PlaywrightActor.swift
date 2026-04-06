@@ -25,26 +25,46 @@ internal actor PlaywrightActor
     ///     Async closure for setting-up `preparedObject`, which is usually a reusable `Browser`.
     internal init(
         pythonPackagePaths: [String],
-        prepare: @Sendable (_ playwright: PythonObject) async -> PythonObject
+        prepare: @CrawlActor @Sendable (_ playwright: PythonObject) async -> PythonObject
     ) async
     {
-        // Set PATH.
+        // Phase 1: Synchronous Python setup.
+        // GIL is held from Py_Initialize (triggered by first Python.import call).
         let sys = Python.import("sys")
         for path in pythonPackagePaths {
             sys.path.append(path)
         }
         sys.path.append(PythonKitAsync.bundleResourcePath) // For importing `pythonkit-async.py`.
 
+        // Pre-import the async helper while GIL is still held.
+        preparePythonKitAsync()
+
         let playwrightModule = Python.import("playwright.async_api")
         self.playwrightContextManager = playwrightModule.async_playwright()
-        self.playwright = await self.playwrightContextManager.start().asPyAsync()
+
+        // Eagerly create the coroutine while we still hold the initial GIL.
+        let startCoroutine = self.playwrightContextManager.start()
+
+        // Phase 2: Release the initial GIL and enable per-job GIL management.
+        // After this call, every Python access must go through PythonGIL.withGIL
+        // or run on PythonSerialExecutor.
+        PythonGIL.activate()
+
+        // Phase 3: Async Python work.
+        // asPyAsync() internally uses PythonGIL.withGIL to acquire the GIL.
+        self.playwright = await startCoroutine.asPyAsync()
         self.preparedObject = await prepare(self.playwright)
     }
 
     deinit
     {
-        Task.detached {  [playwrightContextManager] in
-            await playwrightContextManager.__aexit__().asPyAsync()
+        // Release PythonObjects on the GIL-protected queue to avoid
+        // Py_DecRef being called without the GIL during process teardown.
+        let contextManager = playwrightContextManager
+        PythonGIL.queue.async {
+            PythonGIL.withGIL {
+                _ = contextManager  // prevent capture optimization; release here under GIL
+            }
         }
     }
 
@@ -56,5 +76,11 @@ internal actor PlaywrightActor
     ) async rethrows -> Res
     {
         try await crawl(self.playwright, self.preparedObject)
+    }
+
+    // Pin all Python work to the shared serial executor with GIL management.
+    internal nonisolated var unownedExecutor: UnownedSerialExecutor
+    {
+        PythonSerialExecutor.shared.asUnownedSerialExecutor()
     }
 }
