@@ -3,7 +3,7 @@ import ActoCrawler
 
 /// [playwright-python](https://playwright.dev/python/docs/intro) (headless browser) Actor wrapper.
 /// - Note: This will be used as a dependency of ActoCrawler, and stored throughout its lifetime.
-internal actor PlaywrightActor
+internal actor PlaywrightPyActor
 {
     /// Root of `playwright/async_api`.
     /// - [async_playwright](https://github.com/microsoft/playwright-python/blob/v1.22.0/playwright/async_api/__init__.py#L85)
@@ -25,7 +25,7 @@ internal actor PlaywrightActor
     ///     Async closure for setting-up `preparedObject`, which is usually a reusable `Browser`.
     internal init(
         pythonPackagePaths: [String],
-        prepare: @CrawlActor @Sendable (_ playwright: PythonObject) async -> PythonObject
+        prepare: @CrawlPyActor @Sendable (_ playwright: PythonObject) async -> PythonObject
     ) async
     {
         // Phase 1: Synchronous Python setup.

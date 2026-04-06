@@ -93,5 +93,5 @@ iOSInjectionProject/
 .venv/
 
 # HeadlessBrowserExample output
-Examples/HeadlessBrowserExample/output/
+Examples/HeadlessBrowserPyExample/output/
 Examples/HeadlessBrowserJSExample/output/

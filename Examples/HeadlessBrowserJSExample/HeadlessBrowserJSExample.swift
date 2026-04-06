@@ -1,7 +1,7 @@
 import Foundation
 import ActoCrawlerPlaywrightJS
 
-/// Playwright + JavaScriptKit example that mirrors `HeadlessBrowserExample`.
+/// Playwright + JavaScriptKit example that mirrors `HeadlessBrowserPyExample`.
 @main
 struct HeadlessBrowserJSExample
 {

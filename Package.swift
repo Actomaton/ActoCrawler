@@ -16,8 +16,8 @@ let package = Package(
             name: "ActoCrawlerHTML",
             targets: ["ActoCrawlerHTML"]),
         .library(
-            name: "ActoCrawlerPlaywright",
-            targets: ["ActoCrawlerPlaywright"]),
+            name: "ActoCrawlerPlaywrightPy",
+            targets: ["ActoCrawlerPlaywrightPy"]),
         .library(
             name: "ActoCrawlerPlaywrightJS",
             targets: ["ActoCrawlerPlaywrightJS"]),
@@ -31,8 +31,8 @@ let package = Package(
             name: "PagingScraperExample",
             targets: ["PagingScraperExample"]),
         .executable(
-            name: "HeadlessBrowserExample",
-            targets: ["HeadlessBrowserExample"]),
+            name: "HeadlessBrowserPyExample",
+            targets: ["HeadlessBrowserPyExample"]),
         .executable(
             name: "HeadlessBrowserJSExample",
             targets: ["HeadlessBrowserJSExample"]),
@@ -78,7 +78,7 @@ let package = Package(
             path: "Sources/ActoCrawlerHTML"
         ),
         .target(
-            name: "ActoCrawlerPlaywright",
+            name: "ActoCrawlerPlaywrightPy",
             dependencies: [
                 "ActoCrawler", "PythonKitAsync"
             ]
@@ -114,9 +114,9 @@ let package = Package(
             dependencies: ["ActoCrawlerHTML"],
             path: "Examples/PagingScraperExample"),
         .executableTarget(
-            name: "HeadlessBrowserExample",
-            dependencies: ["ActoCrawlerPlaywright"],
-            path: "Examples/HeadlessBrowserExample",
+            name: "HeadlessBrowserPyExample",
+            dependencies: ["ActoCrawlerPlaywrightPy"],
+            path: "Examples/HeadlessBrowserPyExample",
             exclude: ["pyproject.toml", "uv.lock", "output"]),
         .executableTarget(
             name: "HeadlessBrowserJSExample",
