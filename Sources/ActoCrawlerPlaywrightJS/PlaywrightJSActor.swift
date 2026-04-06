@@ -4,12 +4,6 @@ import JavaScriptEventLoop
 /// Playwright actor wrapper that lazily resolves the injected JavaScript module.
 internal actor PlaywrightJSActor
 {
-    private struct State
-    {
-        let playwright: JSObject
-        let preparedObject: JSObject
-    }
-
     private let resolvePlaywright: @Sendable () async throws -> JSObject
     private let prepare: @Sendable (_ playwright: JSObject) async throws -> JSObject
     private var state: State?
@@ -25,13 +19,14 @@ internal actor PlaywrightJSActor
 
     internal func runCrawl<Res: Sendable>(
         _ crawl: @Sendable (
+            _ isolation: isolated (any Actor),
             _ playwright: JSObject,
             _ preparedObject: JSObject
         ) async throws -> Res
     ) async throws -> Res
     {
         let state = try await self.bootstrap()
-        return try await crawl(state.playwright, state.preparedObject)
+        return try await crawl(self, state.playwright, state.preparedObject)
     }
 
     private func bootstrap() async throws -> State
@@ -53,5 +48,16 @@ internal actor PlaywrightJSActor
     internal nonisolated var unownedExecutor: UnownedSerialExecutor
     {
         JavaScriptEventLoop.shared.asUnownedSerialExecutor()
+    }
+}
+
+// MARK: - PlaywrightJSActor.State
+
+extension PlaywrightJSActor
+{
+    private struct State
+    {
+        let playwright: JSObject
+        let preparedObject: JSObject
     }
 }

@@ -21,7 +21,8 @@ extension Crawler
         config: CrawlerConfig,
         browser: (@Sendable (_ playwright: JSObject) async throws -> JSObject)? = nil,
         crawl: @escaping @Sendable (
-            Request<URLInfo>,
+            _ isolation: isolated (any Actor),
+            _ request: Request<URLInfo>,
             _ playwright: JSObject,
             _ browser: JSObject
         ) async throws -> ([UserRequest<URLInfo>], Output)
@@ -51,7 +52,7 @@ extension Crawler
             dependency: playwrightActor,
             crawl: { request, playwrightActor in
                 try await playwrightActor.runCrawl {
-                    try await crawl(request, $0, $1)
+                    try await crawl($0, request, $1, $2)
                 }
             }
         )

@@ -43,7 +43,7 @@ struct HeadlessBrowserJSExample
                 browserBox.object = browser
                 return browser
             },
-            crawl: { request, _, browser in
+            crawl: { _, request, _, browser in
                 let context = try await awaitObject(browser.newContext!(), label: "browser.newContext")
                 let page = try await awaitObject(context.newPage!(), label: "context.newPage")
 
