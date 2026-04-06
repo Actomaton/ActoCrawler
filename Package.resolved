@@ -1,5 +1,5 @@
 {
-  "originHash" : "c33d5ba8a7be0d8004a585dd43c4dbc75f7d37f95f9593b7a811bae83ecdffb2",
+  "originHash" : "5ebe4aa5ae053467bde88ef512a92740df7849787487e4abe71ff38a944d9c6e",
   "pins" : [
     {
       "identity" : "actomaton",
@@ -7,7 +7,16 @@
       "location" : "https://github.com/inamiy/Actomaton.git",
       "state" : {
         "branch" : "main",
-        "revision" : "e648f64196d434b76452490b173748cc95dba1be"
+        "revision" : "7dda2287c9abfeddef8c5965226d59ab43754ad7"
+      }
+    },
+    {
+      "identity" : "javascriptkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftwasm/JavaScriptKit.git",
+      "state" : {
+        "revision" : "df32a66879cd5e1bbd12308d2fc248cf84fef5d3",
+        "version" : "0.50.0"
       }
     },
     {
@@ -71,6 +80,15 @@
       "state" : {
         "revision" : "06c57924455064182d6b217f06ebc05d00cb2990",
         "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {

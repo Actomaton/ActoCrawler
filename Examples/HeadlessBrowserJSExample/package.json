@@ -1,0 +1,8 @@
+{
+  "name": "headless-browser-js-example",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "^1.0.0"
+  }
+}
