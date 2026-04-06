@@ -18,6 +18,9 @@ let package = Package(
         .library(
             name: "ActoCrawlerPlaywright",
             targets: ["ActoCrawlerPlaywright"]),
+        .library(
+            name: "ActoCrawlerPlaywrightJS",
+            targets: ["ActoCrawlerPlaywrightJS"]),
         .executable(
             name: "ScraperExample",
             targets: ["ScraperExample"]),
@@ -30,11 +33,15 @@ let package = Package(
         .executable(
             name: "HeadlessBrowserExample",
             targets: ["HeadlessBrowserExample"]),
+        .executable(
+            name: "HeadlessBrowserJSExample",
+            targets: ["HeadlessBrowserJSExample"]),
     ],
     dependencies: [
         .package(url: "https://github.com/inamiy/Actomaton.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-async-algorithms.git", from: "1.0.0"),
+        .package(url: "https://github.com/swiftwasm/JavaScriptKit.git", from: "0.50.0"),
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.4.2"),
         .package(url: "https://github.com/pvieito/PythonKit.git", branch: "master"),
     ],
@@ -76,9 +83,24 @@ let package = Package(
                 "ActoCrawler", "PythonKitAsync"
             ]
         ),
+        .target(
+            name: "ActoCrawlerPlaywrightJS",
+            dependencies: [
+                "ActoCrawler",
+                .product(name: "JavaScriptKit", package: "JavaScriptKit"),
+                .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
+            ]
+        ),
         .testTarget(
             name: "ActoCrawlerTests",
             dependencies: ["ActoCrawler"]),
+        .testTarget(
+            name: "ActoCrawlerPlaywrightJSTests",
+            dependencies: [
+                "ActoCrawlerPlaywrightJS",
+                .product(name: "JavaScriptEventLoopTestSupport", package: "JavaScriptKit"),
+            ]
+        ),
         .executableTarget(
             name: "ScraperExample",
             dependencies: ["ActoCrawlerHTML"],
@@ -96,6 +118,11 @@ let package = Package(
             dependencies: ["ActoCrawlerPlaywright"],
             path: "Examples/HeadlessBrowserExample",
             exclude: ["pyproject.toml", "uv.lock", "output"]),
+        .executableTarget(
+            name: "HeadlessBrowserJSExample",
+            dependencies: ["ActoCrawlerPlaywrightJS"],
+            path: "Examples/HeadlessBrowserJSExample",
+            exclude: ["main.mjs", "package.json", "package-lock.json", "node_modules", "output"]),
     ],
     swiftLanguageModes: [.v6]
 )
