@@ -1,5 +1,6 @@
 import Foundation
 import ActoCrawler
+@preconcurrency import SwiftSoup
 
 /// Pagination-based scraping example using `URLInfo`.
 @main

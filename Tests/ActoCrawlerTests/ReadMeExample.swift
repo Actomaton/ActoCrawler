@@ -1,5 +1,6 @@
 import Foundation
 import ActoCrawler
+@preconcurrency import SwiftSoup
 
 /// - Note: Only for compiling purpose.
 /// @main

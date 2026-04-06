@@ -1,5 +1,5 @@
 import Foundation
-import AsyncChannel
+import AsyncAlgorithms
 
 /// Effectful environment for making arbitrary crawler.
 struct Environment<Output, URLInfo>: Sendable

@@ -1,6 +1,6 @@
 @preconcurrency import Foundation
 import Actomaton
-import AsyncChannel
+import AsyncAlgorithms
 
 /// Swift Concurrency-powered crawler engine on top of [Actomaton](https://github.com/inamiy/Actomaton).
 ///
