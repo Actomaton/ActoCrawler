@@ -2,7 +2,7 @@
 
 ## ScraperExample
 
-Basic HTML scraper that extracts links from web pages using [SwiftSoup](https://github.com/scinfu/SwiftSoup).
+Basic HTML scraper using `ActoCrawlerHTML` and [SwiftSoup](https://github.com/scinfu/SwiftSoup).
 
 ```bash
 swift run ScraperExample
@@ -10,7 +10,7 @@ swift run ScraperExample
 
 ## ImageScraperExample
 
-Image scraper that downloads images from web pages.
+Image scraper that combines `ActoCrawlerNetworking` and `ActoCrawlerHTML`.
 
 ```bash
 swift run ImageScraperExample
@@ -18,7 +18,7 @@ swift run ImageScraperExample
 
 ## PagingScraperExample
 
-Scraper with pagination support.
+Scraper with pagination support built on `ActoCrawlerHTML`.
 
 ```bash
 swift run PagingScraperExample

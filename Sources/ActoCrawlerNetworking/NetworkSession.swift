@@ -1,4 +1,5 @@
 import Foundation
+import ActoCrawler
 
 /// `URLSession` wrapped by `Actor`, used in ``Crawler/withNetworkSession(config:crawl:)``.
 public actor NetworkSession
@@ -18,7 +19,7 @@ public actor NetworkSession
             return (data, urlResponse)
         }
         else {
-            throw CrawlError.invalidHTTPResponse(urlResponse)
+            throw CrawlError.invalidHTTPResponse(String(describing: urlResponse))
         }
     }
 }

@@ -2,11 +2,19 @@
 
 **ActoCrawler** is a Swift Concurrency-powered crawler engine on top of [Actomaton](https://github.com/inamiy/Actomaton), with flexible customizability to create various HTML scrapers, image scrapers, etc.
 
+## Products
+
+- `ActoCrawler`: Core crawler engine with generic dependency injection and queueing logic.
+- `ActoCrawlerNetworking`: Networking helpers such as `NetworkSession`, `Response`, and `withNetworkSession`.
+- `ActoCrawlerHTML`: HTML scraping helpers such as `htmlScraper` backed by [SwiftSoup](https://github.com/scinfu/SwiftSoup).
+- `ActoCrawlerPlaywright`: Native headless-browser adapter using [playwright-python](https://playwright.dev/python/docs/intro) via [PythonKit](https://github.com/pvieito/PythonKit.git).
 ## Example
 
 - [Examples](Examples)
 
 ```swift
+import ActoCrawlerHTML
+
 struct Output: Sendable
 {
     let nextLinksCount: Int

@@ -1,9 +1,10 @@
 @preconcurrency import Foundation
+import ActoCrawler
 
 /// HTTP Response  for ``Request`` with `URLSession`'s results and additional `URLInfo`.
 @dynamicMemberLookup
-public struct Response<Data, URLInfo>: Sendable
-    where Data: Sendable, URLInfo: Sendable
+public struct Response<Data, URLInfo>: @unchecked Sendable
+    where URLInfo: Sendable
 {
     /// - Note: Accessible via `@dynamicMemberLookup`.
     private var request: Request<URLInfo>

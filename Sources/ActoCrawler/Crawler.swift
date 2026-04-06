@@ -6,8 +6,10 @@ import AsyncAlgorithms
 ///
 /// Initializers:
 /// - ``Crawler/init(config:dependency:crawl:)`` is the designated initializer for arbitrary effectful crawling logic.
-/// - ``Crawler/withNetworkSession(config:crawl:)`` is a helper initializer that uses ``NetworkSession`` as dependency.
-/// - ``Crawler/htmlScraper(config:scrapeHTML:)`` is a helper initializer to scrape HTML using [SwiftSoup](https://github.com/scinfu/SwiftSoup) .
+/// - Networking convenience initializers such as `withNetworkSession`
+///   live in the `ActoCrawlerNetworking` target.
+/// - HTML scraping convenience initializers such as `htmlScraper`
+///   live in the `ActoCrawlerHTML` target.
 public struct Crawler<Output, URLInfo>: Sendable
     where Output: Sendable, URLInfo: Sendable
 {
@@ -37,21 +39,6 @@ public struct Crawler<Output, URLInfo>: Sendable
             environment: environment
         )
         self.environment = environment
-    }
-
-    /// Helper initializer that adds ``NetworkSession`` as dependency.
-    public static func withNetworkSession(
-        config: CrawlerConfig,
-        crawl: @escaping @Sendable (Request<URLInfo>, NetworkSession) async throws -> ([UserRequest<URLInfo>], Output)
-    ) async -> Crawler<Output, URLInfo>
-    {
-        let configuration: URLSessionConfiguration = {
-            let configuration = URLSessionConfiguration.default
-            configuration.httpAdditionalHeaders = ["User-Agent": config.userAgent]
-            return configuration
-        }()
-
-        return .init(config: config, dependency: await NetworkSession(configuration: configuration), crawl: crawl)
     }
 
     /// Crawler output event `AsyncSequence`.

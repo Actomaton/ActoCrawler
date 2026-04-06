@@ -1,10 +1,8 @@
-@preconcurrency import Foundation
-
 /// Crawler error type.
 public enum CrawlError: Error
 {
     /// Failed to convert `URLResponse` into `HTTPURLResponse`.
-    case invalidHTTPResponse(URLResponse)
+    case invalidHTTPResponse(String)
 
     /// Failed to convert `Data` into crawler's perferred format.
     case invalidData
