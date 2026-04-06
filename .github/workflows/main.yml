@@ -10,8 +10,9 @@ on:
   pull_request:
 
 jobs:
-  swift-build-examples:
-    name: Swift build examples
+  # Builds all targets including example executables (swift-test only covers library/test targets).
+  swift-build:
+    name: Swift build
     runs-on: macos-26
     steps:
     - uses: actions/checkout@v4
@@ -33,7 +34,7 @@ jobs:
   required:
     name: Required
     needs:
-      - swift-build-examples
+      - swift-build
       - swift-test
     if: always()
     runs-on: ubuntu-latest
