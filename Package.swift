@@ -73,7 +73,8 @@ let package = Package(
         .executableTarget(
             name: "HeadlessBrowserExample",
             dependencies: ["ActoCrawlerPlaywright"],
-            path: "Examples/HeadlessBrowserExample"),
+            path: "Examples/HeadlessBrowserExample",
+            exclude: ["pyproject.toml", "uv.lock", "output"]),
     ],
     swiftLanguageModes: [.v6]
 )

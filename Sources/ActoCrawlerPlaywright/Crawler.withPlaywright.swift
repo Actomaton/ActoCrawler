@@ -31,7 +31,7 @@ extension Crawler
     public static func withPlaywright(
         pythonPackagePaths: [String],
         config: CrawlerConfig,
-        browser: (@Sendable (_ playwright: PythonObject) async -> PythonObject)? = nil,
+        browser: (@CrawlActor @Sendable (_ playwright: PythonObject) async -> PythonObject)? = nil,
         crawl: @escaping @CrawlActor @Sendable (
             Request<URLInfo>,
             _ playwright: PythonObject,
@@ -59,8 +59,14 @@ extension Crawler
 // MARK: - Private
 
 /// Global actor for cooperative Playwright crawling to avoid `EXC_BAD_ACCESS`.
+/// Pinned to ``PythonSerialExecutor`` so that Python's GIL is managed per-job.
 @globalActor
 internal actor CrawlActor
 {
     static let shared: CrawlActor = CrawlActor()
+
+    nonisolated var unownedExecutor: UnownedSerialExecutor
+    {
+        PythonSerialExecutor.shared.asUnownedSerialExecutor()
+    }
 }

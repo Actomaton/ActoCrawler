@@ -13,12 +13,42 @@ struct HeadlessBrowserExample
             let screenshotPath: String
         }
 
-        let home = NSHomeDirectory()
+        // Derive `.venv` path from this source file's location.
+        // Run `uv sync` in this directory first to create the venv.
+        let exampleDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().path
+        let venvDir = "\(exampleDir)/.venv"
+        let sitePackages = "\(venvDir)/lib/python3.9/site-packages"
+
+        // Resolve the venv's Python to its real path, then find libpython alongside it.
+        // This works with uv-managed Python installations where the dylib lives in
+        // ~/.local/share/uv/python/<version>/lib/.
+        let venvPython = URL(fileURLWithPath: "\(venvDir)/bin/python3").resolvingSymlinksInPath()
+        let pythonLibDir = venvPython
+            .deletingLastPathComponent() // bin/
+            .deletingLastPathComponent() // <python-root>/
+            .appendingPathComponent("lib/libpython3.9.dylib")
+            .path
+
+        // Resolve Python home to the uv-managed installation root so that
+        // Python can find its standard library (encodings, etc.).
+        let pythonHome = venvPython
+            .deletingLastPathComponent() // bin/
+            .deletingLastPathComponent() // <python-root>/
+            .path
+        setenv("PYTHONHOME", pythonHome, 1)
+
+        // Force PythonKit to use the venv's Python library (PythonKit is incompatible with 3.13+).
+        // Must be called before any Python usage.
+        setenv("PYTHON_LIBRARY", pythonLibDir, 1)
+        PythonLibrary.useLibrary(at: pythonLibDir)
+
+        // Create output directory for screenshots.
+        let outputDir = "\(exampleDir)/output"
+        try? FileManager.default.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
 
         let crawler = await Crawler<Output, Void>.withPlaywright(
             pythonPackagePaths: [
-                // NOTE: Change path to your own settings.
-                "\(home)/.pyenv/versions/miniforge3-4.10.3-10/envs/ml/lib/python3.9/site-packages"
+                sitePackages
             ],
             config: CrawlerConfig(
                 maxTotalRequests: 8,
@@ -39,7 +69,7 @@ struct HeadlessBrowserExample
                 await page.goto(request.url.absoluteString).asPyAsync()
 
                 // Take screenshot.
-                let screenshotPath = "screenshots/example-\(request.order).png"
+                let screenshotPath = "\(exampleDir)/output/example-\(request.order).png"
                 await page.screenshot(path: screenshotPath).asPyAsync()
 
                 // Extract next URL links.

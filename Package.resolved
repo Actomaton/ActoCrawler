@@ -1,5 +1,5 @@
 {
-  "originHash" : "f5f09e2f9430026a61f7b82cd1dfd6c9288ab1bf165830749d9724108a38c2f2",
+  "originHash" : "c33d5ba8a7be0d8004a585dd43c4dbc75f7d37f95f9593b7a811bae83ecdffb2",
   "pins" : [
     {
       "identity" : "actomaton",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/inamiy/Actomaton.git",
       "state" : {
         "branch" : "main",
-        "revision" : "3b74346b6261c9371573117c2a573f27d4da1538"
+        "revision" : "e648f64196d434b76452490b173748cc95dba1be"
       }
     },
     {
@@ -16,7 +16,7 @@
       "location" : "https://github.com/pvieito/PythonKit.git",
       "state" : {
         "branch" : "master",
-        "revision" : "81f621d094a7c8923207efe5178f50dba1b56c39"
+        "revision" : "d030b5193d1e4e770156deb27865773b64c5695f"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
       "state" : {
-        "revision" : "ce9c0d897db8a840c39de64caaa9b60119cf4be8",
-        "version" : "0.8.1"
+        "revision" : "bb436421f57269fbcfe7360735985321585a86e5",
+        "version" : "0.10.1"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup.git",
       "state" : {
-        "revision" : "41e7c263fb8c277e980ebcb9b0b5f6031d3d4886",
-        "version" : "2.4.2"
+        "revision" : "6c7915e16f729857aec3e99068c361e58a00ed68",
+        "version" : "2.13.4"
       }
     },
     {
