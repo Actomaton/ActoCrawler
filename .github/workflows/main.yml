@@ -10,8 +10,8 @@ on:
   pull_request:
 
 jobs:
-  swift-build:
-    name: Swift build
+  swift-build-examples:
+    name: Swift build examples
     runs-on: macos-26
     steps:
     - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
   required:
     name: Required
     needs:
-      - swift-build
+      - swift-build-examples
       - swift-test
     if: always()
     runs-on: ubuntu-latest
