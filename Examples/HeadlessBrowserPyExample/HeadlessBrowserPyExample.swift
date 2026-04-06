@@ -1,9 +1,9 @@
 import Foundation
-import ActoCrawlerPlaywright
+import ActoCrawlerPlaywrightPy
 
 /// [playwright-python](https://playwright.dev/python/docs/intro) (headless browser) example.
 @main
-struct HeadlessBrowserExample
+struct HeadlessBrowserPyExample
 {
     static func main() async
     {
@@ -45,7 +45,7 @@ struct HeadlessBrowserExample
         let outputDir = "\(exampleDir)/output"
         try? FileManager.default.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
 
-        let crawler = await Crawler<Output, Void>.withPlaywright(
+        let crawler = await Crawler<Output, Void>.withPlaywrightPy(
             pythonPackagePaths: [
                 sitePackages
             ],

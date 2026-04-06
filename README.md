@@ -7,7 +7,7 @@
 - `ActoCrawler`: Core crawler engine with generic dependency injection and queueing logic.
 - `ActoCrawlerNetworking`: Networking helpers such as `NetworkSession`, `Response`, and `withNetworkSession`.
 - `ActoCrawlerHTML`: HTML scraping helpers such as `htmlScraper` backed by [SwiftSoup](https://github.com/scinfu/SwiftSoup).
-- `ActoCrawlerPlaywright`: Native headless-browser adapter using [playwright-python](https://playwright.dev/python/docs/intro) via [PythonKit](https://github.com/pvieito/PythonKit.git).
+- `ActoCrawlerPlaywrightPy`: Native headless-browser adapter using [playwright-python](https://playwright.dev/python/docs/intro) via [PythonKit](https://github.com/pvieito/PythonKit.git).
 - `ActoCrawlerPlaywrightJS`: WebAssembly headless-browser adapter using npm `playwright` via [JavaScriptKit](https://github.com/swiftwasm/JavaScriptKit).
 
 ## Example
@@ -68,7 +68,7 @@ print("Output Done")
 
 Two Playwright integrations are available.
 
-- `ActoCrawlerPlaywright` is the native macOS path and is demonstrated by `Examples/HeadlessBrowserExample`.
+- `ActoCrawlerPlaywrightPy` is the native macOS path and is demonstrated by `Examples/HeadlessBrowserPyExample`.
 - `ActoCrawlerPlaywrightJS` is the WebAssembly path and is demonstrated by `Examples/HeadlessBrowserJSExample`.
 
 The JavaScriptKit adapter expects the surrounding JavaScript runtime to install Playwright on `globalThis.__actoCrawlerPlaywright.playwright` before the wasm module is instantiated. The example bootstrap in `Examples/HeadlessBrowserJSExample/main.mjs` does this automatically.

@@ -28,18 +28,18 @@ extension Crawler
     ///     [Playwright](https://github.com/microsoft/playwright-python/blob/v1.22.0/playwright/async_api/_generated.py#L12153)
     ///     and [Browser](https://github.com/microsoft/playwright-python/blob/v1.22.0/playwright/async_api/_generated.py#L11134)
     ///     as `PythonObject`s to inter-op with Python.
-    public static func withPlaywright(
+    public static func withPlaywrightPy(
         pythonPackagePaths: [String],
         config: CrawlerConfig,
-        browser: (@CrawlActor @Sendable (_ playwright: PythonObject) async -> PythonObject)? = nil,
-        crawl: @escaping @CrawlActor @Sendable (
+        browser: (@CrawlPyActor @Sendable (_ playwright: PythonObject) async -> PythonObject)? = nil,
+        crawl: @escaping @CrawlPyActor @Sendable (
             Request<URLInfo>,
             _ playwright: PythonObject,
             _ browser: PythonObject
         ) async throws -> ([UserRequest<URLInfo>], Output)
     ) async -> Crawler<Output, URLInfo>
     {
-        let playwrightActor = await PlaywrightActor(
+        let playwrightActor = await PlaywrightPyActor(
             pythonPackagePaths: pythonPackagePaths,
             prepare: browser ?? { await $0.chromium.launch(headless: false).asPyAsync() }
         )
@@ -58,12 +58,12 @@ extension Crawler
 
 // MARK: - Private
 
-/// Global actor for cooperative Playwright crawling to avoid `EXC_BAD_ACCESS`.
+/// Global actor for cooperative Playwright (Python) crawling to avoid `EXC_BAD_ACCESS`.
 /// Pinned to ``PythonSerialExecutor`` so that Python's GIL is managed per-job.
 @globalActor
-internal actor CrawlActor
+internal actor CrawlPyActor
 {
-    static let shared: CrawlActor = CrawlActor()
+    static let shared: CrawlPyActor = CrawlPyActor()
 
     nonisolated var unownedExecutor: UnownedSerialExecutor
     {
